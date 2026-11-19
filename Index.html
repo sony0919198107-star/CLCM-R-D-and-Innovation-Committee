@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>「南埕衖事」參訪滿意度調查 — QR Code 海報</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --primary: #3b5249;
+      --primary-dark: #24342e;
+      --accent: #a47551;
+      --muted: #6e6e6e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 28px 16px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      min-height: 100vh;
+    }
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", sans-serif;
+    }
+    .btn {
+      padding: 11px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .btn-accent { background: var(--accent); }
+    .btn-accent:hover { background: #8c6140; }
+    .btn-primary { background: var(--primary); }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .poster {
+      width: 100%;
+      max-width: 520px;
+      background: #fffdf9;
+      border: 2px solid #d8cfc0;
+      border-radius: 20px;
+      padding: 42px 32px;
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(59, 82, 73, 0.12);
+      position: relative;
+      font-family: "DFKai-SB", "標楷體", "Noto Serif TC", serif;
+    }
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 11px;
+      border: 1px dashed #c8bba6;
+      border-radius: 14px;
+      pointer-events: none;
+    }
+    .p-org {
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+    .p-title {
+      font-size: 32px;
+      color: var(--primary);
+      margin: 4px 0 14px;
+      line-height: 1.4;
+      font-weight: bold;
+    }
+    .p-sub {
+      font-size: 20px;
+      color: #555;
+      margin-bottom: 26px;
+    }
+    .qr-box {
+      display: inline-flex;
+      padding: 18px;
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      margin-bottom: 22px;
+    }
+    .p-hint {
+      font-size: 22px;
+      color: var(--primary);
+      font-weight: bold;
+      margin: 8px 0;
+    }
+    .p-note {
+      font-size: 16px;
+      color: var(--muted);
+      margin-top: 16px;
+      line-height: 1.65;
+    }
+    @media print {
+      .action-bar { display: none !important; }
+      body { background: #fff; padding: 0; }
+      .poster { box-shadow: none; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="action-bar">
+    <button class="btn btn-accent" onclick="downloadPosterImage()">🖼️ 下載整張海報圖檔 (PNG)</button>
+    <button class="btn btn-primary" onclick="downloadQR()">📱 下載純 QR Code (PNG)</button>
+    <button class="btn btn-primary" onclick="window.print()">🖨️ 列印／另存 PDF</button>
+  </div>
+
+  <div class="poster" id="posterCard">
+    <div class="p-org">佳里奇美醫院 護理部研發創新委員會</div>
+    <div class="p-title">「南埕衖事」參訪<br>滿意度調查</div>
+    <div class="p-sub">建築空間體驗 × 團隊共識交流</div>
+    <div class="qr-box">
+      <div id="qrcode"></div>
+    </div>
+    <div class="p-hint">📱 請開啟手機相機掃描填寫回饋</div>
+    <div class="p-note">
+      您的寶貴意見將作為委員會未來籌辦交流活動之重要參考<br>
+      填寫時間約 1～2 分鐘，感謝您的參與！
+    </div>
+  </div>
+
+  <script>
+    const TARGET_URL = "https://sony0919198107-star.github.io/CLCM-R-D-and-Innovation-Committee/";
+    const qrContainer = document.getElementById("qrcode");
+
+    new QRCode(qrContainer, {
+      text: TARGET_URL,
+      width: 240,
+      height: 240,
+      colorDark: "#24342e",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    function downloadPosterImage() {
+      const poster = document.getElementById("posterCard");
+      html2canvas(poster, { scale: 2, backgroundColor: "#fffdf9" }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "南埕衖事_參訪滿意度海報.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    function downloadQR() {
+      const canvas = qrContainer.querySelector("canvas");
+      const img = qrContainer.querySelector("img");
+      const link = document.createElement("a");
+      link.download = "南埕衖事_參訪滿意度_QRCode.png";
+      link.href = canvas ? canvas.toDataURL("image/png") : img.src;
+      link.click();
+    }
+  </script>
+</body>
+</html>
