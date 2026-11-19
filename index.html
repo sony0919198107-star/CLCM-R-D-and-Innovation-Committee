@@ -205,8 +205,7 @@
   </div>
 
   <script>
-    // 請將您部署好的 Google Apps Script 網頁應用程式網址（/exec 結尾）貼在下方引號內
-    const GAS_WEB_APP_URL = "";
+    const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyw2MaN1gLgiq_L0feW0WVURLqO9LQISwx7mKa7LHCjDQWVkNKHLcvqzKt1HMDVN1yGow/exec";
 
     const likertQuestions = [
       "1. 空間與建築體驗：「南埕衖事」的垂直巷弄建築設計與空間動線，能帶來耳目一新的創新靈感啟發。",
@@ -247,21 +246,14 @@
       const data = Object.fromEntries(formData.entries());
       data.timestamp = new Date().toLocaleString("zh-TW");
 
-      const logs = JSON.parse(localStorage.getItem("nancheng_survey_logs") || "[]");
-      logs.push(data);
-      localStorage.setItem("nancheng_survey_logs", JSON.stringify(logs));
-
-      if (GAS_WEB_APP_URL) {
-        fetch(GAS_WEB_APP_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify(data)
-        }).finally(() => {
-          showSuccess();
-        });
-      } else {
+      fetch(GAS_WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+      }).finally(() => {
         showSuccess();
-      }
+      });
     }
 
     function showSuccess() {
