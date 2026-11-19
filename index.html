@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>「南埕衖事」參訪滿意度調查</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --card: #ffffff;
+      --primary: #3b5249;
+      --primary-dark: #24342e;
+      --accent: #a47551;
+      --text: #2c2c2c;
+      --muted: #6e6e6e;
+      --border: #e2dcd0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .survey-container {
+      width: 100%;
+      max-width: 640px;
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(59, 82, 73, 0.08);
+      overflow: hidden;
+      border-top: 8px solid var(--primary);
+    }
+    .survey-header {
+      padding: 28px 24px 20px;
+      background: #fffdf9;
+      border-bottom: 1px solid var(--border);
+    }
+    .survey-org {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .survey-title {
+      font-size: 24px;
+      color: var(--primary-dark);
+      margin: 0 0 12px;
+      line-height: 1.35;
+    }
+    .survey-desc {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.65;
+      margin: 0;
+    }
+    .survey-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      border-left: 4px solid var(--accent);
+      padding-left: 10px;
+      margin-bottom: 14px;
+    }
+    .q-block { margin-bottom: 16px; }
+    .q-label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .req { color: #c0392b; margin-left: 4px; }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    textarea { min-height: 84px; resize: vertical; }
+    .likert-card {
+      background: #faf9f5;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+    }
+    .likert-q {
+      font-size: 14.5px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      color: #2b2b2b;
+    }
+    .likert-options {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+    .likert-opt { position: relative; }
+    .likert-opt input { position: absolute; opacity: 0; cursor: pointer; }
+    .likert-opt label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 4px;
+      background: #fff;
+      border: 1px solid #d5cfc2;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      text-align: center;
+      transition: 0.15s;
+      height: 100%;
+    }
+    .likert-opt label strong {
+      font-size: 16px;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+    .likert-opt input:checked + label {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .likert-opt input:checked + label strong { color: #fff; }
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .submit-btn:hover { background: var(--primary-dark); }
+    .success-box { display: none; padding: 40px 24px; text-align: center; }
+    .success-box h2 { color: var(--primary); margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <div class="survey-container" id="formSection">
+    <div class="survey-header">
+      <div class="survey-org">佳里奇美醫院 護理部研發創新委員會</div>
+      <h1 class="survey-title">「南埕衖事」參訪滿意度調查</h1>
+      <p class="survey-desc">
+        親愛的委員會夥伴您好：<br>
+        感謝您撥冗參與本次於「南埕衖事」舉辦的委員交流與參訪活動。為了解大家對本次活動安排、空間體驗與交流互動的感受，作為未來委員會籌辦活動之精進參考，請您協助填寫以下問卷（約需 1～2 分鐘）。
+      </p>
+    </div>
+
+    <form class="survey-body" id="surveyForm" onsubmit="handleSubmit(event)">
+      <div>
+        <div class="section-title">一、基本資料</div>
+        <div class="q-block">
+          <label class="q-label">所屬單位（選填）</label>
+          <input type="text" name="unit" placeholder="例如：內科病房、急診室、護理部..." />
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title">二、參訪體驗與活動滿意度</div>
+        <div id="likertContainer"></div>
+      </div>
+
+      <div>
+        <div class="section-title">三、開放性回饋與建議</div>
+        <div class="q-block">
+          <label class="q-label">1. 本次參訪中，您印象最深刻或最喜歡的部分是什麼？</label>
+          <textarea name="favorite" placeholder="例如：垂直巷弄建築光影、義式冰淇淋、團隊交流氛圍..."></textarea>
+        </div>
+        <div class="q-block">
+          <label class="q-label">2. 針對未來研發創新委員會的「院外參訪」或「共識交流活動」，您有什麼建議或期待的地點類型？</label>
+          <textarea name="suggestion" placeholder="請輸入您的寶貴建議..."></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">送出滿意度問卷</button>
+    </form>
+
+    <div class="success-box" id="successBox">
+      <h2>✅ 感謝您的寶貴回饋！</h2>
+      <p>您的「南埕衖事」參訪滿意度問卷已成功送出。</p>
+      <p style="font-size:13px; color:#666; margin-top:16px;">祝您有美好的一天！</p>
+    </div>
+  </div>
+
+  <script>
+    // 請將您部署好的 Google Apps Script 網頁應用程式網址（/exec 結尾）貼在下方引號內
+    const GAS_WEB_APP_URL = "";
+
+    const likertQuestions = [
+      "1. 空間與建築體驗：「南埕衖事」的垂直巷弄建築設計與空間動線，能帶來耳目一新的創新靈感啟發。",
+      "2. 導覽與場館服務：場館人員的接待與空間導覽解說（建築理念、光影與綠意設計）清楚且具吸引力。",
+      "3. 餐飲與休憩品質：現場提供的義式冰淇淋、飲品與休憩環境，讓人感到放鬆與愉悅。",
+      "4. 交流與凝聚效益：此次跨出醫院的輕鬆交流方式，有助於促進委員會成員間的情感聯繫與創新討論。",
+      "5. 流程與時間安排：整體參訪時間長度、交通集合指引與流程節奏安排得宜。",
+      "6. 整體活動滿意度：整體而言，我對本次「南埕衖事」的參訪交流活動感到滿意。"
+    ];
+
+    const labels = ["非常滿意", "滿意", "普通", "不滿意", "非常不滿意"];
+    const container = document.getElementById("likertContainer");
+
+    likertQuestions.forEach((q, idx) => {
+      const card = document.createElement("div");
+      card.className = "likert-card";
+      let optsHtml = "";
+      for (let score = 5; score >= 1; score--) {
+        const id = `q${idx}_${score}`;
+        optsHtml += `
+          <div class="likert-opt">
+            <input type="radio" id="${id}" name="q${idx}" value="${score}" required>
+            <label for="${id}"><strong>${score}</strong><span>${labels[5 - score]}</span></label>
+          </div>
+        `;
+      }
+      card.innerHTML = `<div class="likert-q">${q} <span class="req">*</span></div><div class="likert-options">${optsHtml}</div>`;
+      container.appendChild(card);
+    });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "傳送中...";
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      data.timestamp = new Date().toLocaleString("zh-TW");
+
+      const logs = JSON.parse(localStorage.getItem("nancheng_survey_logs") || "[]");
+      logs.push(data);
+      localStorage.setItem("nancheng_survey_logs", JSON.stringify(logs));
+
+      if (GAS_WEB_APP_URL) {
+        fetch(GAS_WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify(data)
+        }).finally(() => {
+          showSuccess();
+        });
+      } else {
+        showSuccess();
+      }
+    }
+
+    function showSuccess() {
+      document.getElementById("surveyForm").style.display = "none";
+      document.getElementById("successBox").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
